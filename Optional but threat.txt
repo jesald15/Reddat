@@ -1,0 +1,68 @@
+//subscribed feed to avoid api rate limit we are avoiding this feature 
+
+async function loadSubscribedFeed() {
+    if (subs.length === 0) {
+        feed.innerHTML = '<p>You have no subscriptions yet.</p>';
+        return;
+    }
+
+    feed.innerHTML = '<p>Loading your subscriptions...</p>';
+    after = null;
+    currentSubreddit = ''; // not a single subreddit now
+    feed.innerHTML = '';
+
+    for (let subreddit of subs) {
+        try {
+            const res = await fetch(`https://www.reddit.com/r/${subreddit}/${sortType}.json?limit=20`);
+            const data = await res.json();
+
+            // Loop through posts in this subreddit
+            data.data.children.forEach(post => {
+                const p = post.data;
+
+                const div = document.createElement('div');
+                div.classList.add('post');
+
+                let content = `
+                    <h3><a href="https://reddit.com${p.permalink}" target="_blank">${p.title}</a></h3>
+                    <p>↑ ${p.ups}</p>
+                `;
+
+                // IMAGE
+                if (p.post_hint === 'image' && p.url_overridden_by_dest) {
+                    content += `<img src="${p.url_overridden_by_dest}" alt="post image">`;
+                }
+
+                // VIDEO
+                else if (p.is_video && p.media?.reddit_video?.fallback_url) {
+                    content += `
+                        <video controls>
+                            <source src="${p.media.reddit_video.fallback_url}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    `;
+                }
+
+                // GALLERY
+                else if (p.is_gallery && p.gallery_data && p.media_metadata) {
+                    content += `<div class="gallery">`;
+                    p.gallery_data.items.forEach(item => {
+                        const media = p.media_metadata[item.media_id];
+                        let imgUrl = media?.s?.u; 
+                        if (imgUrl) {
+                            imgUrl = imgUrl.replaceAll('&amp;', '&');
+                            content += `<img src="${imgUrl}" alt="gallery image">`;
+                        }
+                    });
+                    content += '</div>';
+                }
+
+                div.innerHTML = content;
+                feed.appendChild(div);
+            });
+
+        } catch (err) {
+            console.error('Error loading subreddit:', subreddit, err);
+        }
+    }
+}

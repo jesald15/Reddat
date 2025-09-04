@@ -1,0 +1,255 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: arial, sans-serif;
+}
+ /* default light mode */ 
+body {
+    background: #ffffff;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode{
+    background: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .post {
+    background: #1e1e1e;
+    border: 1px solid #333;
+}
+
+/* Nav bar */
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2902339d;
+    color: white;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10; /*doubt*/
+}
+
+.navbar .logo{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar nav button {
+    margin-left: 20px;
+    text-decoration: none;
+
+    color: white;
+    font-weight: bold;
+    font-size: 9px;
+    transition: opacity 0.2s;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.navbar nav a:hover{
+    opacity: 0.8;
+}
+
+/* Search bar */ 
+.search{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+    background: #2902339d;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search input{
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.search button {
+    background: #0079d3;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.search button:hover{
+    background: #005999;
+}
+
+/* container */ 
+.container{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/*Feed  */
+
+.feed{
+    width: 100%;
+    max-width: 700px;
+    
+}
+
+.feed h2{
+    font-size: 20px;
+    position: sticky;
+    top: 50px;
+    z-index: 10;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.3); /* grey with 50% transparency */
+    padding: 5px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.feed .sub-icon{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* post card */ 
+.post{
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    transition: box-shadow 0.2s;
+}
+
+.post:hover{
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post h3{
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.post h3 a{
+    text-decoration: none;
+}
+
+.post p{
+    font-size: 14px;
+    color: #555;
+}
+
+/* Image posts */
+.post img{
+    height: 500px;
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Video posts */
+.post video{
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* gallery posts */
+.gallery{
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
+
+.gallery img{
+   max-height: 100%;
+    border-radius:10x;
+    flex-shrink: 0;
+}
+
+
+.gallery::-webkit-scrollbar {
+  height: 2px;
+  background-color: grey;
+}
+
+
+
+#quality {
+  padding: 5px;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+/* SETTING */ 
+.setting{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    background: #26052e9d;
+    padding: 10px 20px;
+}
+
+.setting select{
+    background: rgba(41, 2, 51, 0.4);
+    border: none;
+    border-radius: 8px;
+    padding: 2px;
+    color: white;
+}
+
+.setting button {
+    background: #000000;
+    color: white;
+    border: none;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+/* subscriptions */
+
+#subscriptions h2{
+    font-size: 20px;
+}
+
+#subscriptions input{
+    padding: 5px;
+    width: 50%;
+    margin-right: 130px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#subscriptions button{
+    
+    padding: 5px;
+    margin: 10px;
+    background: skyblue;
+    border-radius: 8px;
+    border: none;
+}
+
+.subscriptions li{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    font-size: ;
+}
