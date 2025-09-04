@@ -4,7 +4,7 @@ togglebtn.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
 });
 
-
+const addsub = document.getElementById('add-subs')
 const feedSection = document.getElementById('feed');
 const subSection = document.getElementById('subscriptions');
 
@@ -61,14 +61,17 @@ function renderSubs() {
 }
 
 
-addSubBtn.addEventListener('click', () =>{
-    const sub = subInput.value.trim();
+addsub.addEventListener('click', ()=>{
+    const sub = input.value.trim();
     if (sub && !subs.includes(sub)){
         subs.push(sub);
         localStorage.setItem('subs', JSON.stringify(subs));
         renderSubs();
     }
-    subInput.value = '';
+    input.value ='';
 });
 
 renderSubs();
+
+
+
