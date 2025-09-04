@@ -12,22 +12,22 @@
 <body>
     <header class="navbar">
         <h1 class="logo" id="home-btn">Reddat</h1>
+        <div class="search-type">
+                <label>
+                    <input type="radio" name="searchType" value="subreddit" checked>
+                    Subreddit
+                </label>
+                <label>
+                    <input type="radio" name="searchType" value="user">
+                    User
+                </label>
+            </div>
         <nav>
-            <button id="subs-btn">Subs</button>
+            <button id="subs-btn">📜</button>
         </nav>
     </header>
     <section class="search">
-        <div class="search-type">
-        <label>
-            <input type="radio" name="searchType" value="subreddit" checked>
-            Subreddit
-        </label>
-        <label>
-            <input type="radio" name="searchType" value="user">
-            User
-        </label>
-    </div>
-        <input type="text" id="subreddit-input" placeholder="Enter subreddit">
+        <input type="text" id="subreddit-input" placeholder="?">
         <button id="search-btn">Search</button>
         <button id="add-subs">Add</button>
     </section>
@@ -48,17 +48,16 @@
                 <option value="all">All</option>
             </select>
         </label>
-          <button id="toggle-dark">🌙 </button>
     </section>
     <main class="container">
         <section class="feed" id="feed">
-            <h2>Feed</h2>
-        </section>
-        <section class="subscriptions" id="subscriptions" style="display: none;">
-            <h2>Subs</h2>
-            <ul id="sub-list"></ul>
+            <h2>Search something...</h2>
         </section>
     </main>
+     <section class="subscriptions" id="subscriptions" style="display: none;">
+            <h2>Subscriptions</h2>
+            <ul id="sub-list"></ul>
+        </section>
     <script src="app.js"></script>
     <script src="setting.js"></script>
 </body>

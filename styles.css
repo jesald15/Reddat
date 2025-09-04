@@ -1,25 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: arial, sans-serif;
+    font-family: Tasa system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
- /* default light mode */ 
 body {
-    background: #ffffff;
-    color: black;
+    color: rgb(255, 253, 253);
     font-family: Arial, Helvetica, sans-serif;
-    transition: background 0.3s, color 0.3s;
-}
 
-body.dark-mode{
-    background: #121212;
-    color: #ffffff;
-}
+    height: 100vh;
 
-body.dark-mode .post {
-    background: #1e1e1e;
-    border: 1px solid #333;
+    background-image: url("images/bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Nav bar */
@@ -27,26 +23,27 @@ body.dark-mode .post {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #2902339d;
+    background: #e4e710cc;
     color: white;
     padding: 10px 20px;
     position: sticky;
     top: 0;
     z-index: 10; /*doubt*/
+    backdrop-filter: blur(2px);
 }
 
 .navbar .logo{
     font-size: 24px;
     font-weight: bold;
+    color: rgb(159, 63, 238);
 }
 
 .navbar nav button {
     margin-left: 20px;
     text-decoration: none;
-
     color: white;
     font-weight: bold;
-    font-size: 9px;
+    font-size: 18px;
     transition: opacity 0.2s;
     background: rgba(0, 0, 0, 0);
     border: none;
@@ -62,19 +59,29 @@ body.dark-mode .post {
     justify-content: center;
     padding: 10px;
     gap: 10px;
-    background: #2902339d;
+    background: #e4e710cc;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.search .search-type{
+    border: 2px solid red;
+    padding: 0;
+    margin: 0;
+    width: 150px;
+
 }
 
 .search input{
     width: 250px;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: none;
+    background: #696b036e;
     border-radius: 6px;
 }
 
 .search button {
-    background: #0079d3;
+    background: #696b036e;
     color: white;
     border: none;
     padding: 10px 16px;
@@ -92,24 +99,24 @@ body.dark-mode .post {
 .container{
     display: flex;
     justify-content: center;
-    padding: 20px;
+   
 }
 
 /*Feed  */
 
 .feed{
+    margin-top: 20px;
+    margin: 10px;
     width: 100%;
-    max-width: 700px;
-    
+    max-width: 700px   
 }
 
 .feed h2{
-    font-size: 20px;
+    font-size: 30px;
     position: sticky;
     top: 50px;
     z-index: 10;
     margin-bottom: 15px;
-    background: rgba(255, 255, 255, 0.3); /* grey with 50% transparency */
     padding: 5px;
     border-radius: 6px;
     display: flex;
@@ -125,8 +132,9 @@ body.dark-mode .post {
 
 /* post card */ 
 .post{
-    background: #f9f9f9;
-    border: 1px solid #ccc;
+    color: white;
+    background: #333232;
+    border: none;
     margin-bottom: 15px;
     padding: 15px;
     border-radius: 10px;
@@ -143,6 +151,7 @@ body.dark-mode .post {
 }
 
 .post h3 a{
+    color: white;
     text-decoration: none;
 }
 
@@ -200,12 +209,12 @@ body.dark-mode .post {
     display: flex;
     gap: 10px;
     justify-content: space-between;
-    background: #26052e9d;
+    background: #e4e710cc;
     padding: 10px 20px;
 }
 
 .setting select{
-    background: rgba(41, 2, 51, 0.4);
+    background: #696b036e;
     border: none;
     border-radius: 8px;
     padding: 2px;
@@ -225,31 +234,29 @@ body.dark-mode .post {
 
 /* subscriptions */
 
-#subscriptions h2{
-    font-size: 20px;
+.subscriptions{
+    margin: 10px;
+    margin-top: 20px;
 }
 
-#subscriptions input{
-    padding: 5px;
-    width: 50%;
-    margin-right: 130px;
-    font-family: Arial, Helvetica, sans-serif;
+#subscriptions h2{
+    font-size: 30px;
 }
 
 #subscriptions button{
-    
+    color: white;
     padding: 5px;
     margin: 10px;
-    background: skyblue;
+    background: rgb(159, 63, 238);
     border-radius: 8px;
     border: none;
 }
 
 .subscriptions li{
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px;
-    font-size: ;
+    font-weight: bold;
+    font-style: italic;
 }

@@ -1,8 +1,3 @@
-// DARK MODE TOGGLE
-const togglebtn = document.getElementById('toggle-dark');
-togglebtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
 
 const addsub = document.getElementById('add-subs')
 const feedSection = document.getElementById('feed');
