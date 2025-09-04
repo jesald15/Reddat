@@ -16,8 +16,17 @@
             <button id="subs-btn">Subs</button>
         </nav>
     </header>
-
     <section class="search">
+        <div class="search-type">
+        <label>
+            <input type="radio" name="searchType" value="subreddit" checked>
+            Subreddit
+        </label>
+        <label>
+            <input type="radio" name="searchType" value="user">
+            User
+        </label>
+    </div>
         <input type="text" id="subreddit-input" placeholder="Enter subreddit">
         <button id="search-btn">Search</button>
         <button id="add-subs">Add</button>

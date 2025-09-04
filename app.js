@@ -1,7 +1,6 @@
-//FEED SORTING
+// FEED SORTING
 let sortType = 'new';
 let timeFilter = 'day';
-
 
 // ELEMENTS
 const input = document.getElementById('subreddit-input');
@@ -11,148 +10,221 @@ const feed = document.getElementById('feed');
 // NEW: variables for infinite scroll
 let after = null;             // Reddit's "next page" marker
 let currentSubreddit = '';    // which subreddit are we viewing
+let currentUser = '';
 let loading = false;          // stops double-loading
-
-
 
 // WHEN CLICK SEARCH
 searchBtn.addEventListener('click', async () => {
-    const subreddit = input.value.trim();
-    if (!subreddit) return;
+    const query = input.value.trim();
+    if (!query) return;
 
-    currentSubreddit = subreddit; // remember current subreddit
-    after = null;                 // reset "next page" marker
+    const searchType = document.querySelector('input[name="searchType"]:checked').value;
     feed.innerHTML = '<p>Loading...</p>';
 
-    //SUBREDDIT ICON
-    const aboutRes = await fetch(`https://www.reddit.com/r/${subreddit}/about.json`);
-    const aboutData = await aboutRes.json();
-    const subIcon = aboutData.data.icon_img || aboutData.data.community_icon || '';
+    if (searchType === "subreddit") {
+        // ===== SUBREDDIT SEARCH =====
+        currentSubreddit = query; // remember current subreddit
+        currentUser = '';
+        after = null;             // reset "next page" marker
 
-    feed.innerHTML = `
-    <h2>
-        ${subIcon ? `<img src="${subIcon}" class="sub-icon">` : ''}
-        r/${subreddit}
-    </h2>
-    `;
-    await loadPosts();            // fetch first posts
+        try {
+            // fetch subreddit info
+            const aboutRes = await fetch(`https://www.reddit.com/r/${currentSubreddit}/about.json`);
+            const aboutData = await aboutRes.json();
+            const subIcon = aboutData.data.icon_img || aboutData.data.community_icon || '';
+
+            feed.innerHTML = `
+              <h2>
+                ${subIcon ? `<img src="${subIcon}" class="sub-icon">` : ''}
+                r/${currentSubreddit}
+              </h2>
+            `;
+
+            await loadPosts(); // fetch posts
+        } catch (err) {
+            feed.innerHTML = '<p>Subreddit not found.</p>';
+            console.error(err);
+        }
+
+    } else if (searchType === "user") {
+        // ===== USER SEARCH =====
+
+        currentUser =  query;
+        currentSubreddit = '';
+        after = null;
+
+        try {
+            const userRes = await fetch(`https://www.reddit.com/user/${query}/about.json`);
+            const userData = await userRes.json();
+
+            if (!userData.data) {
+                feed.innerHTML = '<p>User not found.</p>';
+                return;
+            }
+
+            const icon = userData.data.icon_img || '';
+            const name = userData.data.name;
+            const karma = userData.data.total_karma;
+            const created = new Date(userData.data.created_utc * 1000);
+
+            feed.innerHTML = `
+              <h2>
+    
+                u/${name}
+              </h2>
+              <p>Karma: ${karma}</p>
+              <p>Created: ${created.toDateString()}</p>
+            `;
+
+            await loadUserPosts();
+        } catch (err) {
+            feed.innerHTML = '<p>Error loading user.</p>';
+            console.error(err);
+        }
+    }
 });
 
 // SORT SELECT LISTENER
 const sortSelect = document.getElementById('sort');
 sortSelect.addEventListener('change', () => {
-    sortType = sortSelect.value;;
+    sortType = sortSelect.value;
     after = null;
-    feed.innerHTML = '<p>Loading...</p>';
-    loadPosts();
+    if (currentSubreddit) {
+        feed.innerHTML = '<p>Loading...</p>';
+        loadPosts();
+    }
 });
 
-// SORT TIME LISTNER
+// SORT TIME LISTENER
 const timeSelect = document.getElementById('time');
 timeSelect.addEventListener('change', () => {
     timeFilter = timeSelect.value;
-    if (sortType === 'top') {
+    if (sortType === 'top' && currentSubreddit) {
         after = null;
         feed.innerHTML = '<p>Loading...</p>';
         loadPosts();
     }
 });
 
-// FUNCTION TO LOAD POSTS
+// FUNCTION TO LOAD SUBREDDIT POSTS
 async function loadPosts() {
-    if (loading) return;   // if already loading, stop
+    if (loading) return;
     loading = true;
 
     try {
-        // Reddit API URL
         let url = `https://www.reddit.com/r/${currentSubreddit}/${sortType}.json?limit=20`;
-
-        if (sortType === 'top'){
+        if (sortType === 'top') {
             url += `&t=${timeFilter}`;
         }
-        if (after) url += `&after=${after}`; // add "after" for next page
+        if (after) url += `&after=${after}`;
 
         const res = await fetch(url);
         const data = await res.json();
-        after = data.data.after; // save the "next page" marker
+        after = data.data.after;
 
-        // If first time loading, add subreddit title
         if (!feed.querySelector('h2')) {
             feed.innerHTML = `<h2>r/${currentSubreddit}</h2>`;
         }
 
-        // Loop through each post
-        data.data.children.forEach(post => {
-            const p = post.data;
-
-            const div = document.createElement('div');
-            div.classList.add('post');
-
-            let content = `
-                <h3><a href="https://reddit.com${p.permalink}" target="_blank">${p.title}</a></h3>
-                <p>⬆️ ${p.ups}</p>
-            `;
-
-            // IMAGE
-            if (p.post_hint === 'image' && p.url_overridden_by_dest) {
-                content += `<img src="${p.url_overridden_by_dest}" alt="post image">`;
-            }
-
-            // VIDEO
-            else if (p.is_video && p.media?.reddit_video?.fallback_url) {
-                content += `
-                    <video controls>
-                        <source src="${p.media.reddit_video.fallback_url}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                `;
-            }
-
-            // GALLERY
-          // GALLERY
-            else if (p.is_gallery && p.gallery_data && p.media_metadata) {
-                content += `<div class="gallery">`;
-                p.gallery_data.items.forEach(item => {
-                    const media = p.media_metadata[item.media_id];
-                    let imgUrl = media?.s?.u; // full-size source
-                    if (imgUrl) {
-                        imgUrl = imgUrl.replaceAll('&amp;', '&');
-                        content += `<img src="${imgUrl}" alt="gallery image">`;
-                    }
-                });
-                content += '</div>';
-            }
-
-            div.innerHTML = content;
-            feed.appendChild(div);
-        });
+        renderPosts(data.data.children);
 
     } catch (err) {
         feed.innerHTML = '<p>Error loading posts</p>';
         console.error(err);
     }
 
-    loading = false; // done loading
+    loading = false;
 }
 
-// WHEN SCROLL NEAR BOTTOM
+// FUNCTION TO LOAD USER POSTS
+async function loadUserPosts() {
+    if (loading) return;
+    loading = true;
+
+    try {
+        let url = `https://www.reddit.com/user/${currentUser}/submitted.json?limit=20`;
+        if (after) url += `&after=${after}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        after = data.data.after;
+
+        renderPosts(data.data.children);
+
+    } catch (err) {
+        feed.innerHTML += '<p>Error loading user posts</p>';
+        console.error(err);
+    }
+
+    loading = false;
+}
+
+// FUNCTION TO RENDER POSTS (used by both sub + user)
+function renderPosts(posts) {
+    posts.forEach(post => {
+        const p = post.data;
+
+        const div = document.createElement('div');
+        div.classList.add('post');
+
+        let content = `
+            <h3><a href="https://reddit.com${p.permalink}" target="_blank">${p.title}</a></h3>
+            <p>⬆️ ${p.ups}</p>
+        `;
+
+        // IMAGE
+        if (p.post_hint === 'image' && p.url_overridden_by_dest) {
+            content += `<img src="${p.url_overridden_by_dest}" alt="post image">`;
+        }
+
+        // VIDEO
+        else if (p.is_video && p.media?.reddit_video?.fallback_url) {
+            content += `
+                <video controls>
+                    <source src="${p.media.reddit_video.fallback_url}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            `;
+        }
+
+        // GALLERY
+        else if (p.is_gallery && p.gallery_data && p.media_metadata) {
+            content += `<div class="gallery">`;
+            p.gallery_data.items.forEach(item => {
+                const media = p.media_metadata[item.media_id];
+                let imgUrl = media?.s?.u;
+                if (imgUrl) {
+                    imgUrl = imgUrl.replaceAll('&amp;', '&');
+                    content += `<img src="${imgUrl}" alt="gallery image">`;
+                }
+            });
+            content += '</div>';
+        }
+
+        div.innerHTML = content;
+        feed.appendChild(div);
+    });
+}
+
+// INFINITE SCROLL
 window.addEventListener('scroll', () => {
-    // check if user scrolled near bottom (100px left)
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-        if (currentSubreddit && after && !loading) {
-            loadPosts(); // fetch more posts
+        if (!loading && after) {
+            if (currentSubreddit) {
+                loadPosts();
+            } else if (currentUser) {
+                loadUserPosts();
+            }
         }
     }
 });
 
-
-
-if("serviceWorker" in navigator){
-    window.addEventListener('load', () =>{
+// SERVICE WORKER
+if ("serviceWorker" in navigator) {
+    window.addEventListener('load', () => {
         navigator.serviceWorker
-        .register("./sw.js")
-        .then(() => console.log("Service Worker registered"))
-      .catch((err) => console.error("SW failed", err));
-
-    })
+            .register("./sw.js")
+            .then(() => console.log("Service Worker registered"))
+            .catch((err) => console.error("SW failed", err));
+    });
 }
