@@ -20,7 +20,6 @@ searchBtn.addEventListener('click', async () => {
     if (!query) return;
 
     const searchType = document.getElementById('searchType').value;
-    feed.innerHTML = '<p>Loading...</p>';
 
     if (searchType === "subreddit") {
         // ===== SUBREDDIT SEARCH =====
@@ -170,35 +169,55 @@ function renderPosts(posts) {
             <h3><a href="https://reddit.com${p.permalink}" target="_blank">${p.title}</a></h3>
             <p>⬆️ ${p.ups}</p>
         `;
+            // IMAGE
+            if (p.post_hint === 'image' && p.url_overridden_by_dest) {
+                content += `<img src="${p.url_overridden_by_dest}" alt="post image">`;
+            }
 
-        // IMAGE
-        if (p.post_hint === 'image' && p.url_overridden_by_dest) {
-            content += `<img src="${p.url_overridden_by_dest}" alt="post image">`;
-        }
+            // VIDEO
+            else if (p.is_video && p.media?.reddit_video?.fallback_url) {
+                content += `
+                    <video controls>
+                        <source src="${p.media.reddit_video.fallback_url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+            }
 
-        // VIDEO
-        else if (p.is_video && p.media?.reddit_video?.fallback_url) {
-            content += `
-                <video controls>
-                    <source src="${p.media.reddit_video.fallback_url}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            `;
-        }
+            // REDGIFS (external link only, since API doesn't give video)
+            else if (p.domain === "redgifs.com" && p.url_overridden_by_dest) {
+                content += `
+                    <p><a href="${p.url_overridden_by_dest}" target="_blank">
+                        🔗 Watch on Redgifs
+                    </a></p>
+                `;
+            }
 
-        // GALLERY
-        else if (p.is_gallery && p.gallery_data && p.media_metadata) {
-            content += `<div class="gallery">`;
-            p.gallery_data.items.forEach(item => {
-                const media = p.media_metadata[item.media_id];
-                let imgUrl = media?.s?.u;
-                if (imgUrl) {
-                    imgUrl = imgUrl.replaceAll('&amp;', '&');
-                    content += `<img src="${imgUrl}" alt="gallery image">`;
-                }
-            });
-            content += '</div>';
-        }
+
+            // GALLERY
+            else if (p.is_gallery && p.gallery_data && p.media_metadata) {
+                content += `<div class="gallery">`;
+                p.gallery_data.items.forEach(item => {
+                    const media = p.media_metadata[item.media_id];
+                    let imgUrl = media?.s?.u;
+                    if (imgUrl) {
+                        imgUrl = imgUrl.replaceAll('&amp;', '&');
+                        content += `<img src="${imgUrl}" alt="gallery image">`;
+                    }
+                });
+                content += '</div>';
+            }
+
+            // LINK
+            else if (p.post_hint === 'link' || p.domain) {
+                content += `
+                    <p>
+                        🔗 <a href="${p.url}" target="_blank" rel="noopener noreferrer">
+                            ${p.domain} 
+                        </a>
+                    </p>
+                `;
+            }
 
         div.innerHTML = content;
         feed.appendChild(div);

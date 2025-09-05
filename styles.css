@@ -101,23 +101,6 @@ body {
     cursor: pointer;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Search bar */ 
 .search{
     display: flex;
@@ -187,9 +170,6 @@ body {
 
 .feed h2{
     font-size: 30px;
-    position: sticky;
-    top: 50px;
-    z-index: 10;
     margin-bottom: 15px;
     padding: 5px;
     border-radius: 6px;
