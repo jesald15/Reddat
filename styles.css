@@ -9,13 +9,8 @@
 body {
     color: rgb(255, 253, 253);
     font-family: Arial, Helvetica, sans-serif;
-
+    background-color: #343541;
     height: 100vh;
-
-    background-image: url("images/bg.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 /* Nav bar */
@@ -23,7 +18,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #e4e710cc;
+    background: #343541;
     color: white;
     padding: 10px 20px;
     position: sticky;
@@ -36,6 +31,8 @@ body {
     font-size: 24px;
     font-weight: bold;
     color: rgb(159, 63, 238);
+    cursor: pointer;
+
 }
 
 .navbar nav button {
@@ -53,19 +50,86 @@ body {
     opacity: 0.8;
 }
 
+
+/* Hamburger menu */ 
+
+#hamburger{
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    color: rgb(159, 63, 238);
+}
+
+#sidebar{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: #343541;
+    color: white;
+    padding: 20px;
+    transform: translate(100%); /* move to out of view */
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    border: thin white;
+}
+
+/* sidebar visible */
+#sidebar.show{
+    transform: translate(0);
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar li{
+    margin: 20px 0;
+}
+
+#sidebar button{
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Search bar */ 
 .search{
     display: flex;
     justify-content: center;
     padding: 10px;
     gap: 10px;
-    background: #e4e710cc;
+    background: #343541;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 
 }
 
 .search .search-type{
-    border: 2px solid red;
     padding: 0;
     margin: 0;
     width: 150px;
@@ -76,12 +140,22 @@ body {
     width: 250px;
     padding: 10px;
     border: none;
-    background: #696b036e;
+    background: #343541;
     border-radius: 6px;
+    border: 0.1px solid white;
+    color: white;
 }
 
+.search select{
+    border: 1px thin white;
+    background-color: #343541;
+    color: white;
+    padding: 5px;
+}
+
+
 .search button {
-    background: #696b036e;
+    background: #343541;
     color: white;
     border: none;
     padding: 10px 16px;
@@ -92,7 +166,7 @@ body {
 }
 
 .search button:hover{
-    background: #005999;
+    background: rgb(159, 63, 238);
 }
 
 /* container */ 
@@ -133,7 +207,7 @@ body {
 /* post card */ 
 .post{
     color: white;
-    background: #333232;
+    background: #343541;
     border: none;
     margin-bottom: 15px;
     padding: 15px;
@@ -209,12 +283,12 @@ body {
     display: flex;
     gap: 10px;
     justify-content: space-between;
-    background: #e4e710cc;
+    background: #343541;
     padding: 10px 20px;
 }
 
 .setting select{
-    background: #696b036e;
+    background: #343541;
     border: none;
     border-radius: 8px;
     padding: 2px;
@@ -247,9 +321,15 @@ body {
     color: white;
     padding: 5px;
     margin: 10px;
-    background: rgb(159, 63, 238);
+    background-color: #343541;
     border-radius: 8px;
     border: none;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+
+#subscriptions button:hover{
+    background-color: rgb(159, 63, 238);
 }
 
 .subscriptions li{
@@ -258,5 +338,9 @@ body {
     align-items: center;
     padding: 5px;
     font-weight: bold;
-    font-style: italic;
+    }
+
+#subs-btn{
+    cursor: pointer;
+    color: rgb(159, 63, 238);
 }

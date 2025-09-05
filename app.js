@@ -14,11 +14,12 @@ let currentUser = '';
 let loading = false;          // stops double-loading
 
 // WHEN CLICK SEARCH
+
 searchBtn.addEventListener('click', async () => {
     const query = input.value.trim();
     if (!query) return;
 
-    const searchType = document.querySelector('input[name="searchType"]:checked').value;
+    const searchType = document.getElementById('searchType').value;
     feed.innerHTML = '<p>Loading...</p>';
 
     if (searchType === "subreddit") {
@@ -61,8 +62,6 @@ searchBtn.addEventListener('click', async () => {
                 feed.innerHTML = '<p>User not found.</p>';
                 return;
             }
-
-            const icon = userData.data.icon_img || '';
             const name = userData.data.name;
             const karma = userData.data.total_karma;
             const created = new Date(userData.data.created_utc * 1000);

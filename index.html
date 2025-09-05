@@ -11,23 +11,23 @@
 </head>
 <body>
     <header class="navbar">
-        <h1 class="logo" id="home-btn">Reddat</h1>
-        <div class="search-type">
-                <label>
-                    <input type="radio" name="searchType" value="subreddit" checked>
-                    Subreddit
-                </label>
-                <label>
-                    <input type="radio" name="searchType" value="user">
-                    User
-                </label>
-            </div>
-        <nav>
-            <button id="subs-btn">📜</button>
-        </nav>
+        <h1 class="logo" id="home-btn">Celestia</h1>
+        <button id="hamburger">&#9776</button>
     </header>
+    <nav id="sidebar">
+        <ul>
+            <li><button class="menu-item" id="home-menu">Home</button></li>
+               <li> <button class="menu-item" id="subs-btn">Subscriptions</button></li>
+                  <li><button class="menu-item" id="saved">Saved</button></li>
+        </ul>
+    </nav>
+
     <section class="search">
-        <input type="text" id="subreddit-input" placeholder="?">
+        <select id="searchType">
+            <option value="subreddit">r/</option>
+            <option value="user">u/</option>
+        </select>
+        <input type="text" id="subreddit-input" placeholder="Search Something...">
         <button id="search-btn">Search</button>
         <button id="add-subs">Add</button>
     </section>
@@ -51,7 +51,7 @@
     </section>
     <main class="container">
         <section class="feed" id="feed">
-            <h2>Search something...</h2>
+            <h2></h2>
         </section>
     </main>
      <section class="subscriptions" id="subscriptions" style="display: none;">

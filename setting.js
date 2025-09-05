@@ -69,4 +69,36 @@ addsub.addEventListener('click', ()=>{
 renderSubs();
 
 
+// HAMBURGER MENU SETTING
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+
+// Toggle sidebar when hamburger is clicked
+hamburger.addEventListener('click', () => {
+  sidebar.classList.toggle('show');
+});
+
+// Close sidebar when a menu item is clicked
+const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach(item => {
+  item.addEventListener('click', () => {
+    sidebar.classList.remove('show');
+  });
+});
+
+// Close sidebar if user clicks outside
+document.addEventListener('click', (event) => {
+  if (sidebar.classList.contains('show') &&
+      !sidebar.contains(event.target) &&
+      event.target !== hamburger) {
+    sidebar.classList.remove('show');
+  }
+});
+
+// Example: subscriptions menu
+document.getElementById('subs-menu').addEventListener('click', () => {
+  feedSection.style.display = 'none';
+  subSection.style.display = 'block';
+});
+
 
