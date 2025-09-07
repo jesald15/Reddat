@@ -27,14 +27,23 @@ Homepage Feed from Subscribed Subreddits❌
 
 comments full ⚠️ (reddit api rate limit us)
 
-saving the post
-
 make it pwa ✅
 
 icon is really important ✅
 
 Auto-Hide Seen Posts ❌
 
+PENDING FEATURES
 
-CHATGPTs FEATURE RECOMMENDATIONS
+youtube inline preview ✅
+
+reading queue
+
+statistics dashboard
+
+post export 
+
+keyword filters
+
+saved posts 
 

@@ -13,6 +13,8 @@ let currentSubreddit = '';    // which subreddit are we viewing
 let currentUser = '';
 let loading = false;          // stops double-loading
 
+
+
 // WHEN CLICK SEARCH
 
 searchBtn.addEventListener('click', async () => {
@@ -208,6 +210,30 @@ function renderPosts(posts) {
                 content += '</div>';
             }
 
+            else if (p.url && (p.url.includes('youtube.com') || p.url.includes('youtu.be'))) {
+                let videoId = null;
+
+                if (p.url.includes('youtube.com')) {
+                    const urlObj = new URL(p.url);
+                    videoId = urlObj.searchParams.get('v');
+                } else if (p.url.includes('youtu.be')) {
+                    videoId = p.url.split('youtu.be/')[1].split('?')[0];
+                }
+
+                if (videoId) {
+                    content += `
+                        <iframe width="400" height="300"
+                            src="https://www.youtube.com/embed/${videoId}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    `;
+                } else {
+                    content += `<p><a href="${p.url}" target="_blank">${p.url}</a></p>`;
+                }
+            }
+
             // LINK
             else if (p.post_hint === 'link' || p.domain) {
                 content += `
@@ -217,7 +243,7 @@ function renderPosts(posts) {
                         </a>
                     </p>
                 `;
-            }
+            } 
 
         div.innerHTML = content;
         feed.appendChild(div);
